@@ -3,7 +3,7 @@ import java.awt.*;
 
 public class Windows {
 
-
+    //changed
     public Windows(int width, int height, String title, Game game){
 
         JFrame frame = new JFrame(title);

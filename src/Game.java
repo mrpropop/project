@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.util.Random;
 
+//changed
 public class Game extends Canvas implements Runnable {
 
     public static int WIDTH = 800, HEIGHT = WIDTH / 12 * 9;
