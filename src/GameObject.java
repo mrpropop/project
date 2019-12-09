@@ -1,5 +1,7 @@
 import java.awt.*;
 
+
+//changed
 public abstract class GameObject {
 
     protected Handler handler;

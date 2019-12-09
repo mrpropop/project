@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.util.Random;
 
+
+//changed
 public class Block extends GameObject{
 
     public Color original = Color.yellow;

@@ -1,5 +1,5 @@
 import java.awt.*;
-
+//changed
 public class HUD {
 
     private int score = 0;

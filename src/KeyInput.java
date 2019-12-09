@@ -1,7 +1,7 @@
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
-
+//changed
 public class KeyInput extends KeyAdapter {
 
     private Handler handler;
