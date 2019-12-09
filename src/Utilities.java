@@ -13,4 +13,11 @@ public class Utilities {
         }
     }
 
+    public static boolean EqualsWithinEpsilon(double Amount1, double Amount2){
+        if(Amount1 - Amount2 < Settings.EPSILON){
+            return true;
+        }
+        return false;
+    }
+
 }

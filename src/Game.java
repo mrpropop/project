@@ -42,9 +42,19 @@ public class Game extends Canvas implements Runnable {
         hud = new HUD();
         generateMap();
         addListeners();
-        spawnObjects();
+        //spawnObjects();
+        SpawnBlocksWithRandomVelocities(handler);
     }
 
+
+
+    public static void SpawnBlocksWithRandomVelocities(Handler handler){
+        for(int i = 0; i< 10; i++){
+            Block  block = new Block((int) (Math.random()*Game.WIDTH),(int) (Math.random()*Game.HEIGHT), 25, 25,ID.BLOCK,handler, (int) Math.round(Math.random() * 10) + 1, (byte) Constants.COLLISION_MODE_SOLID);
+            //Block  block = new Block(0,0, 25, 25,ID.BLOCK,handler, (int) Math.round(Math.random() * 10) + 1, (byte) Constants.COLLISION_MODE_SOLID);
+            handler.addObject(block);
+        }
+    }
 
     public Game(){
         window = new Windows(WIDTH, HEIGHT, title,this);
@@ -64,12 +74,17 @@ public class Game extends Canvas implements Runnable {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
-            if(delta >=1){
+            if(delta >=1) {
                 tick();
                 updates++;
                 delta--;
+                if (Settings.LimitFPSToTicks) {
+                    render();
+                }
             }
-            render();
+            if(!Settings.LimitFPSToTicks){
+                render();
+            }
             frames++;
 
             if(System.currentTimeMillis() - timer > 1000){
