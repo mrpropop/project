@@ -117,7 +117,7 @@ public abstract class GameObject {
                     }
 
                     // From the bottom
-                    if (this.getBounds().intersects(gameObject.getBounds())) {
+                    if (this.getBoundsBottom().intersects(gameObject.getBounds())) {
                         velY = 0;
                         System.out.println("bottom");
                     }
