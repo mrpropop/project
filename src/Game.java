@@ -1,5 +1,8 @@
+import com.sun.corba.se.spi.ior.ObjectId;
+
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.Random;
 
 public class Game extends Canvas implements Runnable {
 
@@ -7,26 +10,44 @@ public class Game extends Canvas implements Runnable {
     public String title = "Game 1";
 
 
+    //Instances
+    private Windows window;
     private Handler handler;
+    private Camera camera;
     private HUD hud;
 
     private Thread thread;
     private boolean isRunning = false;
 
 
-    public void init(){
-        handler = new Handler();
-        hud = new HUD();
-
-      for(int i = 0; i< 2; i++){
-          Block  block = new Block(300,300, 25, 25,ID.BLOCK,handler);
-          handler.addObject(block);
-      }
+    private void addListeners() {
+        this.addKeyListener(new KeyInput(handler, this));
     }
 
+    public void generateMap() {
+
+    }
+
+    public void spawnObjects(){
+        Block  block = new Block(300,300, 25, 25,ID.BLOCK,handler);
+        handler.addObject(block);
+        Player player = new Player(400,400,32,32,ID.PLAYER, handler);
+        handler.addObject(player);
+    }
+
+    public void init(){
+        camera = new Camera(0, 0);
+        handler = new Handler();
+        hud = new HUD();
+        generateMap();
+        addListeners();
+        spawnObjects();
+    }
+
+
     public Game(){
+        window = new Windows(WIDTH, HEIGHT, title,this);
         init();
-        new Windows(WIDTH, HEIGHT, title,this);
     }
 
     @Override
@@ -66,6 +87,13 @@ public class Game extends Canvas implements Runnable {
         if(hud != null){
             hud.tick();
         }
+
+        for (int i = 0; i < handler.objects.size(); i++) {
+            GameObject gameObject = handler.objects.get(i);
+            if (gameObject.getId().equals(ID.PLAYER)) {
+                camera.tick(gameObject);
+            }
+        }
     }
 
     private void render() {
@@ -78,10 +106,14 @@ public class Game extends Canvas implements Runnable {
 
         do{
             Graphics g = bs.getDrawGraphics();
+            Graphics2D g2d = (Graphics2D) g;
             //meat and bones of rendering
             drawBackground(g);
+            // Camera moves to the right, things are not shifted
+            g2d.translate(camera.getX(), camera.getY());
             hud.render(g);
             handler.render(g);
+            g2d.translate(-camera.getX(), -camera.getY());
             //////////////////
             bs.show(); //will cause the buffer that you just drew to become the current buffer for the jframe
             g.dispose();
@@ -117,4 +149,5 @@ public class Game extends Canvas implements Runnable {
     public static void main(String[] args) {
         Game game = new Game();
     }
+
 }

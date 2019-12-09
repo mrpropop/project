@@ -2,8 +2,11 @@ import java.awt.*;
 
 public abstract class GameObject {
 
-   protected Handler handler;
-   protected ID id;
+    protected Handler handler;
+    protected ID id;
+
+    protected boolean falling = true;
+    protected boolean jumping = false;
 
     protected float x,y;
     protected int width, height;
@@ -14,7 +17,7 @@ public abstract class GameObject {
     // We need these functions in every class that extends GameObject
     public abstract void tick();
     public abstract void render(Graphics g);
-    
+
     public GameObject(float x, float y, int width, int height, ID id, Handler handler){
         this.x = x;
         this.y = y;
@@ -37,6 +40,8 @@ public abstract class GameObject {
 
 
 
+
+
     public int getWidth(){
         return width;
     }
@@ -54,29 +59,84 @@ public abstract class GameObject {
     }
 
 
+    public float getVelX(){
+        return velX;
+    }
 
-    public void collision() {
-        for(int i = 0; i< handler.objects.size(); i++) {
-            GameObject gameObject = handler.objects.get(i);
-            if(gameObject != null && this != gameObject){
-                if (this.getBounds().intersects(gameObject.getBounds())){
-                    System.out.println("An intersect");
-                    if(gameObject.id == ID.BLOCK){
-                        Block block = (Block) gameObject;
-                        block.color = Color.red;
-                    }
-                }else{
-                    if(gameObject.id == ID.BLOCK){
-                        Block block = (Block) gameObject;
-                        block.color = block.original;
-                    }
-                }
-            }
-        }
+    public void setVelX(int velX){
+        this.velX = velX;
+    }
+
+    public float getVelY(){
+        return velY;
+    }
+
+    public void setVelY(int velY){
+        this.velY = velY;
+    }
+
+
+    public ID getId(){
+        return id;
     }
 
 
 
 
+    public Rectangle getBoundsBottom() {
+        return new Rectangle((int) x + width / 4, (int) y + height / 2, width / 2, height / 2);
+    }
 
+    public Rectangle getBoundsTop() {
+        return new Rectangle((int) x + width / 4, (int) y, width / 2, height / 2);
+    }
+
+    public Rectangle getBoundsRight() {
+        return new Rectangle((int) x + width - 5, (int) y + 5, 5, height - 10);
+    }
+
+    public Rectangle getBoundsLeft() {
+        return new Rectangle((int) x, (int) y + 5, 5, height - 10);
+    }
+
+
+
+    public boolean collision() {
+        boolean collided = false;
+        for(int i = 0; i< handler.objects.size(); i++) {
+            GameObject gameObject = handler.objects.get(i);
+            if(gameObject != null && this != null && this != gameObject){
+                if (this.getBounds().intersects(gameObject.getBounds())) {
+                    collided = true;
+                    System.out.println("An intersect");
+
+                    // From the top
+                    if (this.getBoundsTop().intersects(gameObject.getBounds())) {
+                        velY = 0;
+                        System.out.println("top");
+                    }
+
+                    // From the bottom
+                    if (this.getBounds().intersects(gameObject.getBounds())) {
+                        velY = 0;
+                        System.out.println("bottom");
+                    }
+
+                    // From the right
+                    if (this.getBoundsRight().intersects(gameObject.getBounds())) {
+                        System.out.println("right");
+                        velX = 0;
+                    }
+
+                    // From the left
+                    if (this.getBoundsLeft().intersects(gameObject.getBounds())) {
+                        velX = 0;
+                        System.out.println("left");
+                    }
+
+                }
+            }
+        }
+        return collided;
+    }
 }

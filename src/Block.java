@@ -4,19 +4,15 @@ import java.util.Random;
 public class Block extends GameObject{
 
     public Color original = Color.yellow;
-    public Color color = Color.yellow;
+    public Color shapeColor = Color.yellow;
 
     Random random = new Random();
 
     public Block(float x, float y, int width, int height, ID id, Handler handler) {
         super(x, y, width, height,  id, handler);
 
-        double val1 = random.nextDouble() * 7;
-
-
+        double val1 = random.nextDouble() * 5;
         velX = (int)val1;
-
-
     }
 
     @Override
@@ -39,7 +35,11 @@ public class Block extends GameObject{
            velX = Math.abs(velX);
         }
 
-        collision();
+        if(collision()){
+            shapeColor = Color.red;
+        }else{
+            shapeColor = original;
+        }
 
 
 
@@ -47,7 +47,7 @@ public class Block extends GameObject{
 
     @Override
     public void render(Graphics g) {
-        g.setColor(color);
+        g.setColor(shapeColor);
         g.drawRect((int)x,(int)y,width, height);
     }
 }

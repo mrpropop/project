@@ -7,5 +7,5 @@ public enum ID {
      * does the game know if the object is a player, enemy or a coins
      */
 
-    BLOCK();
+    BLOCK(), PLAYER;
 }

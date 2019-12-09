@@ -12,11 +12,13 @@ public class Handler {
      * in the game, we need to process and handle each one of those objects.
      *
      * So this class is going to loop through all of our objects in the game, and
-     * indivIdually update them, and render them to the screen
+     * individually update them, and render them to the screen
      *
      */
 
     List<GameObject> objects;
+
+    public int playerSpeed = 10;
 
     public Handler(){
         this.objects = new ArrayList<GameObject>();
