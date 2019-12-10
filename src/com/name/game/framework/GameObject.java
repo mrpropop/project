@@ -177,70 +177,56 @@ public abstract class GameObject {
         float center_CenterX =  (object_getCenterX+gameObject_getCenterX)/2.0f;
         float center_CenterY =  (object_getCenterY+gameObject_getCenterY)/2.0f;
 
-        //Center_center 310.4046 , 18.294716)
-        //Center_1 308.23035 , 19.632494)
-        //Center_2 312.57886 , 16.95694)
+        float SafetyFactor = 1.01f;
 
-        //Center_center 90.81395 , 235.11526)
-        //Center_1 92.01671 , 233.93039)
-        //Center_2 89.61119 , 236.30013)
-        //ResultCenter_center: 90.81395 , 235.11526)
-        //ResultCenter_1: 90.31395 , 233.93039)
-        //ResultCenter_2: 89.61119 , 234.61526)
-        System.out.println("Heigths : " + object.height + " " + gameObject.height);
+        float MoveX = Math.abs(object_getCenterX - center_CenterX); // supposed to be 10 with object width 20, gameobject = 4, object = 1;
+        float MoveDistancePerMassX = 0;                                                         //but lets say its 6
+        float MoveDistancePerMassY = 0;                                                         //but lets say its 6
+        if(MoveX < (object.width + gameObject.width)/4.0f){
+            float MoveDistanceX = 2 * ((object.width + gameObject.width)/4.0f - MoveX);
+            MoveDistancePerMassX = MoveDistanceX / (object.mass + gameObject.mass);
+        }
+        float MoveY = Math.abs(object_getCenterY - center_CenterY);
+        if(MoveY < (object.height + gameObject.height)/4.0f){
+            float MoveDistanceY = 2 * ((object.height + gameObject.height)/4.0f - MoveY);
+            MoveDistancePerMassY = MoveDistanceY / (object.mass + gameObject.mass);
+        }
 
-        System.out.println("Center_center " + center_CenterX + " , "+ center_CenterY+")");
-        System.out.println("Center_1 " + object_getCenterX + " , "+ object_getCenterY+")");
-        System.out.println("Center_2 " + gameObject_getCenterX + " , "+ gameObject_getCenterY+")");
 
         if((object_getCenterX - center_CenterX) < (object_getCenterY - center_CenterY)) {
             if (Math.abs(object_getCenterX - center_CenterX) < Math.round(object.width / 2.0D)) {
                 if (object_getCenterX > center_CenterX) {
-                    object.x = center_CenterX + object.width;
+                    object.x += SafetyFactor * MoveDistancePerMassX * gameObject.mass;
                 } else {
-                    object.x = center_CenterX - object.width;
+                    object.x -= SafetyFactor * MoveDistancePerMassX * gameObject.mass;
                 }
             }
             if (Math.abs(gameObject_getCenterX - center_CenterX) < Math.round(gameObject.width / 2.0)) {
                 if (gameObject_getCenterX > center_CenterX) {
-                    gameObject.x = center_CenterX + gameObject.width;
+                    gameObject.x += SafetyFactor * MoveDistancePerMassX * object.mass;
                 } else {
-                    gameObject.x = center_CenterX - gameObject.width;
+                    gameObject.x -= SafetyFactor * MoveDistancePerMassX * object.mass;
                 }
             }
         }else {
             if (Math.abs(object_getCenterY - center_CenterY) < Math.round(object.height / 2.0D)) {
                 if (object_getCenterY > center_CenterY) {
-                    object.y = center_CenterY + object.height;
+                    object.y += SafetyFactor * MoveDistancePerMassY * gameObject.mass;
                 } else {
-                    object.y = center_CenterY - object.height;
+                    object.y -= SafetyFactor * MoveDistancePerMassY * gameObject.mass;
                 }
             }
 
             if (Math.abs(gameObject_getCenterY - center_CenterY) < Math.round(gameObject.height / 2.0D)) {
                 if (gameObject_getCenterY > center_CenterY) {
-                    gameObject.y = center_CenterY + gameObject.height;
+                    gameObject.y += SafetyFactor * MoveDistancePerMassY * object.mass;
                 } else {
-                    gameObject.y = center_CenterY - gameObject.height;
+                    gameObject.y -= SafetyFactor * MoveDistancePerMassY * object.mass;
                 }
             }
         }
 
-//Center_center 353.4953 , 587.2355)
-//Center_1 341.7253 , 583.8831)
-//Center_2 365.2653 , 590.5878)
-//ResultCenter_center: 353.4953 , 587.2355)
-//ResultCenter_1: 341.7253 , 583.8831)
-//ResultCenter_2: 352.9953 , 586.7355)
 
-        object_getCenterX = object.x + object.width/2.0f;
-        gameObject_getCenterX = gameObject.x + gameObject.width/2.0f;
-        object_getCenterY = object.y + object.height/2.0f;
-        gameObject_getCenterY = gameObject.y + gameObject.height/2.0f;
-
-        System.out.println("ResultCenter_center: " + center_CenterX + " , "+ center_CenterY+")");
-        System.out.println("ResultCenter_1: " + object_getCenterX + " , "+ object_getCenterY+")");
-        System.out.println("ResultCenter_2: " + gameObject_getCenterX + " , "+ gameObject_getCenterY+")");
 
     }
 

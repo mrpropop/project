@@ -16,6 +16,7 @@ public class Player extends GameObject {
 
     public Player(float x, float y, int width, int height, Identifier identifier, Handler handler) {
         super(x, y, width, height, identifier, handler);
+        mass = 1000000;
     }
 
     @Override
