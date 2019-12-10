@@ -40,6 +40,8 @@ public class Block extends GameObject {
             shapeColor = original;
         }
 
+        Friction();
+
     }
 
     public void bounce(){

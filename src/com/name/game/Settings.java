@@ -8,4 +8,10 @@ public class Settings {
    public static boolean horizontalCameraEnabled = true;
    public static boolean verticalCameraEnabled = true;
 
+   public static float GRAVITY_CONSTANT = 9.8f;
+   public static float STANDARD_MU = 0.050F;
+
+
+
+
 }

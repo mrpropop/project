@@ -1,10 +1,14 @@
 package com.name.game.framework;
 
 import com.name.game.Constants;
+import com.name.game.Settings;
 import com.name.game.Utilities;
 import com.name.game.window.Handler;
 
 import java.awt.*;
+
+import static com.name.game.Settings.GRAVITY_CONSTANT;
+import static com.name.game.Settings.STANDARD_MU;
 
 
 public abstract class GameObject {
@@ -260,6 +264,26 @@ public abstract class GameObject {
         } else {
             return new double[]{result1_1, result2_1};
         }
+    }
+
+    public void Friction(){
+        float mu_K = STANDARD_MU;
+        float F_z = GRAVITY_CONSTANT * mass;
+        float F_f = F_z * mu_K;
+        int X_mul = 1;
+        int Y_mul = 1;
+        if(velX > 0){
+            X_mul = -1;
+        }
+        if(velY > 0){
+            Y_mul = -1;
+        }
+        //F = ma so a = F/m
+        float acc = F_f/(60.0f * mass);
+        //System.out.println("Vel X Before: " + velX);
+        velX = velX + X_mul * acc;
+        //System.out.println("Vel X After: " + velX);
+        velY = velY + Y_mul * acc;
     }
 
 }
